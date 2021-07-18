@@ -1,0 +1,32 @@
+mixed-port: 7890
+allow-lan: true
+bind-address: "*"
+mode: rule
+log-level: info
+external-controller: 127.0.0.1:9090
+
+dns:
+  enable: true
+  ipv6: false
+  enhanced-mode: redir-host
+  use-hosts: true
+  nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  fallback:
+    - 8.8.8.8
+    - 208.67.222.222
+  fallback-filter:
+    geoip: true
+    ipcidr:
+      - 240.0.0.0/4
+      - 0.0.0.0/32
+
+proxies:
+
+proxy-groups:
+  - { name: "🐱 $app_name", type: select, proxies: ["♻️ 延迟最优", "🔯 故障转移"] }
+  - { name: "♻️ 延迟最优", type: url-test, proxies: [], url: "http://www.qualcomm.cn/generate_204", interval: 500, tolerance: 25 }
+  - { name: "🔯 故障转移", type: fallback, proxies: [], url: "http://www.qualcomm.cn/generate_204", interval: 250 }
+
+rules:

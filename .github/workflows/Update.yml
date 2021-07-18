@@ -1,0 +1,29 @@
+name: Update
+
+on:
+  push:
+  schedule:
+    - cron: 0 19 * * *
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Update
+      run: |
+        rm -f custom.clash.yaml
+        chmod +x subconverter
+        ./subconverter -g
+        sed -i '1,/Rule:/d' TCat.yml
+        cp default.clash.yaml custom.clash.yaml
+        sed -i '32r TCat.yml' custom.clash.yaml
+        rm -f TCat.yml
+        rm -rf cache
+        git config --global user.name TCatCloud
+        git checkout --orphan latest_branch
+        git add -A
+        git commit -am "Update"
+        git branch -D master
+        git branch -m master
+        git push -f origin master
