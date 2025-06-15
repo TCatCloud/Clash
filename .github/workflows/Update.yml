@@ -1,0 +1,29 @@
+name: Update
+
+on:
+  push:
+  schedule:
+    - cron: 0 19 * * *
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Update
+      run: |
+        rm -f custom.surfboard.conf
+        chmod +x subconverter
+        ./subconverter -g
+        sed -i '1,/\[Rule\]/d' Surfboard.conf
+        cp default.surfboard.conf custom.surfboard.conf
+        sed -i '17r Surfboard.conf' custom.surfboard.conf
+        rm -f Surfboard.conf
+        rm -rf cache
+        git config --global user.name TCatCloud
+        git checkout --orphan latest_branch
+        git add -A
+        git commit -am "Update"
+        git branch -D master
+        git branch -m master
+        git push -f origin master
