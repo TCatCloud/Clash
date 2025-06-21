@@ -1,0 +1,154 @@
+external-controller: 127.0.0.1:6666
+bind-address: '*'
+mixed-port: 8888
+allow-lan: true
+log-level: info
+mode: rule
+ipv6: true
+
+dns:
+  enable: true
+  ipv6: true
+  enhanced-mode: redir-host
+  nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  fallback:
+    - 8.8.8.8
+    - 208.67.222.222
+  fallback-filter:
+    geoip: true
+    ipcidr:
+      - 0.0.0.0/8
+      - 10.0.0.0/8
+      - 100.64.0.0/10
+      - 127.0.0.0/8
+      - 169.254.0.0/16
+      - 172.16.0.0/12
+      - 192.0.0.0/24
+      - 192.0.2.0/24
+      - 192.88.99.0/24
+      - 192.168.0.0/16
+      - 198.18.0.0/15
+      - 198.51.100.0/24
+      - 203.0.113.0/24
+      - 224.0.0.0/4
+      - 240.0.0.0/4
+      - 255.255.255.255/32
+    domain:
+      - '+.google.com'
+      - '+.facebook.com'
+      - '+.youtube.com'
+      - '+.githubusercontent.com'
+      - '+.googlevideo.com'
+
+proxies:
+
+proxy-groups:
+  - { name: "🐱 TCat云服务", type: select, proxies: ["👍 最优节点"] }
+  - { name: "👍 最优节点", type: url-test, proxies: [], url: "http://www.qualcomm.cn/generate_204", interval: 500, tolerance: 25 }
+
+rule-providers:
+   Steam:
+     type: http
+     behavior: classical
+     url: "https://clash.tcat.vip/Steam.yaml"
+     path: ./providers/ruleset/Steam.yaml
+     interval: 86400
+
+   Netflix:
+     type: http
+     behavior: classical
+     url: "https://clash.tcat.vip/Netflix.yaml"
+     path: ./providers/ruleset/Netflix.yaml
+     interval: 86400
+
+   Disney+:
+     type: http
+     behavior: classical
+     url: "https://clash.tcat.vip/Disney+.yaml"
+     path: ./providers/ruleset/Disney+.yaml
+     interval: 86400
+
+   Bahamut:
+     type: http
+     behavior: classical
+     url: "https://clash.tcat.vip/Bahamut.yaml"
+     path: ./providers/ruleset/Bahamut.yaml
+     interval: 86400
+
+   OneDrive:
+     type: http
+     behavior: classical
+     url: "https://clash.tcat.vip/OneDrive.yaml"
+     path: ./providers/ruleset/OneDrive.yaml
+     interval: 86400
+
+   🍎 苹果代理:
+     type: http
+     behavior: classical
+     url: "https://clash.tcat.vip/Apple-Proxy.yaml"
+     path: ./providers/ruleset/苹果代理.yaml
+     interval: 86400
+
+   🍏 苹果直连:
+     type: http
+     behavior: classical
+     url: "https://clash.tcat.vip/Apple-Direct.yaml"
+     path: ./providers/ruleset/苹果直连.yaml
+     interval: 86400
+
+   🇨🇳 国内直连:
+     type: http
+     behavior: classical
+     url: "https://clash.tcat.vip/China.yaml"
+     path: ./providers/ruleset/国内直连.yaml
+     interval: 86400
+
+   🚫 广告拦截:
+     type: http
+     behavior: classical
+     url: "https://clash.tcat.vip/AD.yaml"
+     path: ./providers/ruleset/广告拦截.yaml
+     interval: 86400
+
+   🏴‍☠️ 国外代理:
+     type: http
+     behavior: classical
+     url: "https://clash.tcat.vip/Global.yaml"
+     path: ./providers/ruleset/国外代理.yaml
+     interval: 86400
+
+   📲 电报通讯:
+     type: http
+     behavior: classical
+     url: "https://clash.tcat.vip/Telegram.yaml"
+     path: ./providers/ruleset/电报通讯.yaml
+     interval: 86400
+
+   🖥️ 内部网络:
+     type: http
+     behavior: classical
+     url: "https://clash.tcat.vip/LAN.yaml"
+     path: ./providers/ruleset/内部网络.yaml
+     interval: 86400
+
+rules:
+  - DOMAIN-SUFFIX,dqb.pw,DIRECT
+  - DOMAIN-SUFFIX,tcat.cc,DIRECT
+  - DOMAIN-SUFFIX,tcat.vip,DIRECT
+  - DOMAIN-SUFFIX,moecat.pw,DIRECT
+  - RULE-SET,Steam,🎮 Steam
+  - RULE-SET,Netflix,🎬 Netflix
+  - RULE-SET,Disney+,🎞 Disney+
+  - RULE-SET,Bahamut,📺 Bahamut
+  - RULE-SET,OneDrive,☁️ OneDrive
+  - RULE-SET,🍎 苹果代理,🐱 TCat云服务
+  - RULE-SET,🍏 苹果直连,DIRECT
+  - RULE-SET,🇨🇳 国内直连,DIRECT
+  - RULE-SET,🚫 广告拦截,REJECT
+  - RULE-SET,🏴‍☠️ 国外代理,🐱 TCat云服务
+  - RULE-SET,📲 电报通讯,🐱 TCat云服务
+  - RULE-SET,🖥️ 内部网络,DIRECT
+  - GEOIP,CN,DIRECT
+  - MATCH,🐱 TCat云服务
